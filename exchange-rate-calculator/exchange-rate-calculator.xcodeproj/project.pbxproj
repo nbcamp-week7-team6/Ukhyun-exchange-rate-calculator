@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A5CD52A42DACCEB4008E7287 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5CD52A32DACCEB4008E7287 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		A5CD527D2DACCDDA008E7287 /* exchange-rate-calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "exchange-rate-calculator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5CD52A42DACCEB4008E7287 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = "exchange-rate-calculator";
 			packageProductDependencies = (
+				A5CD52A32DACCEB4008E7287 /* SnapKit */,
 			);
 			productName = "exchange-rate-calculator";
 			productReference = A5CD527D2DACCDDA008E7287 /* exchange-rate-calculator.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = A5CD52742DACCDDA008E7287;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A5CD52A22DACCEB4008E7287 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A5CD527E2DACCDDA008E7287 /* Products */;
 			projectDirPath = "";
@@ -341,6 +350,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A5CD52A22DACCEB4008E7287 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A5CD52A32DACCEB4008E7287 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5CD52A22DACCEB4008E7287 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A5CD52752DACCDDA008E7287 /* Project object */;
 }
