@@ -12,7 +12,6 @@ enum ExchangeRate {
     
     var endPoint: URL {
         switch self {
-            
         case .krw:
             return URL(string: baseURL + "KRW")!
         case .usd:
