@@ -19,7 +19,7 @@
 		A5CD528F2DACCDDB008E7287 /* Exceptions for "exchange-rate-calculator" folder in "exchange-rate-calculator" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Application/Info.plist,
 			);
 			target = A5CD527C2DACCDDA008E7287 /* exchange-rate-calculator */;
 		};
