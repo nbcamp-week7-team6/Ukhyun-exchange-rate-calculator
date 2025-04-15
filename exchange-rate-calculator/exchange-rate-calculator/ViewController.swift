@@ -2,18 +2,13 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
-
     private let tableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .white
         loadData()
         configureUI()
-        
     }
-    
 }
 
 extension ViewController{
@@ -24,6 +19,7 @@ extension ViewController{
     }
     
     private func setUI() {
+        view.backgroundColor = .white
         [tableView].forEach { view.addSubview($0) }
     }
     
@@ -71,7 +67,5 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         return cell
-    }
-
-    
+    } 
 }
