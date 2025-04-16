@@ -4,7 +4,6 @@ import SnapKit
 class ViewController: UIViewController {
     private let tableView = UITableView()
     
-    // 튜플 형태로 저장
     private var exchangeRates: [(currency: String, rate: Double)] = []
     
     override func viewDidLoad() {
@@ -28,7 +27,7 @@ extension ViewController {
     
     private func setUpConstraints() {
         tableView.snp.makeConstraints { make in
-            make.size.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     
@@ -46,13 +45,6 @@ extension ViewController {
     private func loadData() {
         NetworkManager.shared
             .callRequest(api: .usd) { (data: ExchangeRateData) in
-                var rates: [(currency: String, rate: Double)] = []
-                let targetCurrencies = ["KRW", "USD", "JPY"]
-                for currency in targetCurrencies {
-                    if let rate = data.rates[currency] {
-                        rates.append((currency, rate))
-                    }
-                }
                 self.exchangeRates = data.rates.map { (code, rate) in
                     (currency: code, rate: rate)
                 }
@@ -60,7 +52,11 @@ extension ViewController {
                     self.tableView.reloadData()
                 }
             } failHandler: {
-                self.showAlert(title: "Error", message: "환율 데이터를 불러올 수 없습니다.")
+                self.exchangeRates = []
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.showAlert(title: "Error", message: "환율 데이터를 불러올 수 없습니다.")
+                }
             }
     }
 }
