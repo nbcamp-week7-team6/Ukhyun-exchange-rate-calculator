@@ -51,6 +51,8 @@ extension ViewController {
     }
     
     private func setUpTableView() {
+        tableView.rowHeight = UITableView.automaticDimension
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -83,12 +85,16 @@ extension ViewController {
 
 extension ViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let trimmedSearch = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         if searchText.isEmpty {
             filteredExchangeRates = exchangeRates
         } else {
-            filteredExchangeRates = exchangeRates.filter {
-                $0.currency.lowercased().contains(searchText.lowercased())
-            }
+            filteredExchangeRates = exchangeRates.filter({ item in
+                let currenctCodeContain = item.currency.lowercased().contains(trimmedSearch)
+                let countryName = (countryMapping[item.currency] ?? "").lowercased()
+                let countryMatch = countryName.contains(trimmedSearch)
+                return currenctCodeContain || countryMatch
+            })
         }
         tableView.reloadData()
     }
@@ -96,10 +102,20 @@ extension ViewController: UISearchBarDelegate {
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredExchangeRates.count
+        return filteredExchangeRates.isEmpty ? 1 : filteredExchangeRates.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if filteredExchangeRates.isEmpty {
+            let cell = UITableViewCell()
+            var config = cell.defaultContentConfiguration()
+            config.text = "검색 결과가 없습니다."
+            config.textProperties.alignment = .center
+            cell.contentConfiguration = config
+            cell.selectionStyle = .none
+            return cell
+        }
+        
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: ExchangeRateTableViewCell.id,
             for: indexPath
