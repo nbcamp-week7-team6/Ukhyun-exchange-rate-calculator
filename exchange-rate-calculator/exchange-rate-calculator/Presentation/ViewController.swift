@@ -108,7 +108,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         }
         let item = filteredExchangeRates[indexPath.row]
         let countryName = countryMapping[item.currency] ?? "미지원 국가"
-        cell.cellData(currency: "\(item.currency) (\(countryName))", rate: item.rate.decimalFormatted)
+        cell
+            .cellData(
+                currency: item.currency,
+                country: countryName,
+                rate: item.rate.decimalFormatted
+            )
         
         return cell
     } 
