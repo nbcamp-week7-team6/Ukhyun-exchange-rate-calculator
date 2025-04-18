@@ -2,9 +2,18 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
+    private let searchBar: UISearchBar = {
+        let bar = UISearchBar()
+        bar.placeholder = "통화 검색"
+        bar.searchTextField.backgroundColor = .systemGray4
+        return bar
+    }()
+    
     private let tableView = UITableView()
     
     private var exchangeRates: [(currency: String, rate: Double)] = []
+    
+    private var filteredExchangeRates: [(currency: String, rate: Double)] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,21 +26,33 @@ extension ViewController {
     private func configureUI() {
         setUpViews()
         setUpConstraints()
+        setUpSearchBar()
         setUpTableView()
     }
     
     private func setUpViews() {
         view.backgroundColor = .white
-        [tableView].forEach { view.addSubview($0) }
+        [searchBar, tableView].forEach { view.addSubview($0) }
     }
     
     private func setUpConstraints() {
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.directionalHorizontalEdges.equalToSuperview()
+        }
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(searchBar.snp.bottom)
+            make.directionalHorizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
+    private func setUpSearchBar() {
+        searchBar.delegate = self
+    }
+    
     private func setUpTableView() {
+        tableView.rowHeight = UITableView.automaticDimension
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -48,6 +69,7 @@ extension ViewController {
                 self.exchangeRates = data.rates.map { (code, rate) in
                     (currency: code, rate: rate)
                 }
+                self.filteredExchangeRates = self.exchangeRates
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
@@ -61,21 +83,53 @@ extension ViewController {
     }
 }
 
+extension ViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let trimmedSearch = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        if searchText.isEmpty {
+            filteredExchangeRates = exchangeRates
+        } else {
+            filteredExchangeRates = exchangeRates.filter({ item in
+                let currenctCodeContain = item.currency.lowercased().contains(trimmedSearch)
+                let countryName = (countryMapping[item.currency] ?? "").lowercased()
+                let countryMatch = countryName.contains(trimmedSearch)
+                return currenctCodeContain || countryMatch
+            })
+        }
+        tableView.reloadData()
+    }
+}
+
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return exchangeRates.count
+        return filteredExchangeRates.isEmpty ? 1 : filteredExchangeRates.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if filteredExchangeRates.isEmpty {
+            let cell = UITableViewCell()
+            var config = cell.defaultContentConfiguration()
+            config.text = "검색 결과가 없습니다."
+            config.textProperties.alignment = .center
+            cell.contentConfiguration = config
+            cell.selectionStyle = .none
+            return cell
+        }
+        
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: ExchangeRateTableViewCell.id,
             for: indexPath
         ) as? ExchangeRateTableViewCell else {
             return ExchangeRateTableViewCell()
         }
-        let item = exchangeRates[indexPath.row]
+        let item = filteredExchangeRates[indexPath.row]
         let countryName = countryMapping[item.currency] ?? "미지원 국가"
-        cell.cellData(currency: "\(item.currency) (\(countryName))", rate: item.rate.decimalFormatted)
+        cell
+            .cellData(
+                currency: item.currency,
+                country: countryName,
+                rate: item.rate.decimalFormatted
+            )
         
         return cell
     } 
