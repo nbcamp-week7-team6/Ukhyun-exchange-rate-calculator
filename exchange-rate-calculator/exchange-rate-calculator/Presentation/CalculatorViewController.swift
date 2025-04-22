@@ -41,13 +41,15 @@ class CalculatorViewController: UIViewController {
         return textField
     }()
     
-    private let convertButton: UIButton = {
+    private lazy var convertButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 8
         button.clipsToBounds = true
         button.backgroundColor = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.setTitle("환율 계산", for: .normal)
+        button.addTarget(self, action: #selector(convertButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -59,13 +61,15 @@ class CalculatorViewController: UIViewController {
         return result
     }()
     
+    var currency: String?
+    var country: String?
+    var rate: Double?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadData()
+        load()
         configureUI()
-
     }
-
 }
 
 extension CalculatorViewController {
@@ -107,7 +111,33 @@ extension CalculatorViewController {
 }
 
 extension CalculatorViewController {
-    func loadData() {
+    @objc
+    private func convertButtonTapped() {
+        guard let text = amountTextField.text, !text.isEmpty else {
+            showAlert(title: "입력 오류", message: "금액을 입력해주세요.")
+            return
+        }
+        guard let amount = Double(text) else {
+            showAlert(title: "입력 오류", message: "올바른 숫자를 입력해주세요.")
+            return
+        }
+        guard let rate = rate else {
+            showAlert(title: "오류", message: "환율 정보가 없습니다.")
+            return
+        }
         
+        let result = amount * rate
+        resultLabel.text = "$\(amount.decimalFormattedWithTwo) → \(result.decimalFormattedWithTwo)\(currency ?? "")"
+    }
+}
+
+extension CalculatorViewController {
+    func load() {
+        loadVCData()
+    }
+    
+    func loadVCData() {
+        currencyLabel.text = currency
+        countryLabel.text = country
     }
 }
