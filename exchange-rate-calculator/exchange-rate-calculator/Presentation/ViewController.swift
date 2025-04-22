@@ -128,9 +128,20 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             .cellData(
                 currency: item.currency,
                 country: countryName,
-                rate: item.rate.decimalFormatted
+                rate: item.rate.decimalFormattedWithFour
             )
         
         return cell
-    } 
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = filteredExchangeRates[indexPath.row]
+        let countryName = countryMapping[item.currency] ?? " 미지원 국가"
+        let calcVC = CalculatorViewController()
+        calcVC.currency = item.currency
+        calcVC.country = countryName
+        calcVC.rate = item.rate
+        navigationController?.pushViewController(calcVC, animated: true)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "환율 정보", style: .plain, target: nil, action: nil)
+    }
 }
