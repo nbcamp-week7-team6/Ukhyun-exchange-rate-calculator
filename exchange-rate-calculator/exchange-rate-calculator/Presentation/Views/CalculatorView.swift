@@ -7,6 +7,7 @@ class CalculatorView: UIView {
         title.text = "환율 계산기"
         title.font = .boldSystemFont(ofSize: 24)
         title.textAlignment = .left
+        title.textColor = UIColor(named: "TextColor")
         return title
     }()
     
@@ -21,13 +22,14 @@ class CalculatorView: UIView {
     public let currencyLabel: UILabel = {
         let currency = UILabel()
         currency.font = .systemFont(ofSize: 24, weight: .bold)
+        currency.textColor = UIColor(named: "TextColor")
         return currency
     }()
     
     public let countryLabel: UILabel = {
         let country = UILabel()
         country.font = .systemFont(ofSize: 16)
-        country.textColor = .gray
+        country.textColor = UIColor(named: "SecondaryTextColor")
         return country
     }()
     
@@ -37,6 +39,8 @@ class CalculatorView: UIView {
         textField.keyboardType = .decimalPad
         textField.textAlignment = .center
         textField.placeholder = "금액을 입력하세요"
+        textField.textColor = UIColor(named: "TextColor")
+        textField.backgroundColor = UIColor(named: "CellBackgroundColor")
         return textField
     }()
     
@@ -44,8 +48,8 @@ class CalculatorView: UIView {
         let button = UIButton()
         button.layer.cornerRadius = 8
         button.clipsToBounds = true
-        button.backgroundColor = .systemBlue
-        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(named: "ButtonColor")
+        button.setTitleColor(UIColor(named: "TextColor"), for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.setTitle("환율 계산", for: .normal)
         return button
@@ -56,6 +60,7 @@ class CalculatorView: UIView {
         result.font = .systemFont(ofSize: 20, weight: .medium)
         result.textAlignment = .center
         result.numberOfLines = 0
+        result.textColor = UIColor(named: "TextColor")
         return result
     }()
     
@@ -71,7 +76,7 @@ class CalculatorView: UIView {
     }
     
     private func setUpViews() {
-        backgroundColor = .white
+        backgroundColor = UIColor(named: "BackgroundColor")
         [titleLabel, labelStackView, amountTextField, convertButton, resultLabel].forEach { addSubview($0) }
         [currencyLabel, countryLabel].forEach { labelStackView.addArrangedSubview($0) }
     }

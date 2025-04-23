@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5602E2C2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5602E2A2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataClass.swift */; };
+		A5602E2D2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5602E2B2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataProperties.swift */; };
 		A5CD52A42DACCEB4008E7287 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5CD52A32DACCEB4008E7287 /* SnapKit */; };
 		A5CD531C2DAD03BB008E7287 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A5CD531B2DAD03BB008E7287 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A5602E2A2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CachedExchangeRate+CoreDataClass.swift"; path = "exchange-rate-calculator/CachedExchangeRate+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A5602E2B2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CachedExchangeRate+CoreDataProperties.swift"; path = "exchange-rate-calculator/CachedExchangeRate+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A5CD527D2DACCDDA008E7287 /* exchange-rate-calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "exchange-rate-calculator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -52,6 +56,8 @@
 		A5CD52742DACCDDA008E7287 = {
 			isa = PBXGroup;
 			children = (
+				A5602E2A2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataClass.swift */,
+				A5602E2B2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataProperties.swift */,
 				A5CD527F2DACCDDA008E7287 /* exchange-rate-calculator */,
 				A5CD527E2DACCDDA008E7287 /* Products */,
 			);
@@ -145,6 +151,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5602E2C2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataClass.swift in Sources */,
+				A5602E2D2DB9A30400EFFD7F /* CachedExchangeRate+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

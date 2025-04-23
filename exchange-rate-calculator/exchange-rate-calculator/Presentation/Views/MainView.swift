@@ -5,13 +5,14 @@ class MainView: UIView {
     let searchBar: UISearchBar = {
         let bar = UISearchBar()
         bar.placeholder = "통화 검색"
-        bar.searchTextField.backgroundColor = .systemGray4
+        bar.searchTextField.backgroundColor = UIColor(named: "CellBackgroundColor")
         return bar
     }()
     
     let tableView: UITableView = {
         let table = UITableView()
         table.rowHeight = UITableView.automaticDimension
+        table.backgroundColor = UIColor(named: "BackgroundColor")
         return table
     }()
     
@@ -27,7 +28,7 @@ class MainView: UIView {
     }
     
     private func setupViews() {
-        backgroundColor = .white
+        backgroundColor = UIColor(named: "BackgroundColor")
         addSubview(searchBar)
         addSubview(tableView)
     }

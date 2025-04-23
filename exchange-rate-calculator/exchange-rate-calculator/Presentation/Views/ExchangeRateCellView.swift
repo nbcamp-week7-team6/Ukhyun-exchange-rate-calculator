@@ -5,13 +5,14 @@ class ExchangeRateCellContentView: UIView {
     let currencyLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textColor = UIColor(named: "TextColor")
         return label
     }()
     
     let countryLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
-        label.textColor = .lightGray
+        label.textColor = UIColor(named: "SecondaryTextColor")
         return label
     }()
     
@@ -19,12 +20,13 @@ class ExchangeRateCellContentView: UIView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textAlignment = .right
+        label.textColor = UIColor(named: "TextColor")
         return label
     }()
     
     let starButton: UIButton = {
         let button = UIButton(type: .system)
-        button.tintColor = .systemYellow
+        button.tintColor = UIColor(named: "FavoriteColor")
         button.setImage(UIImage(systemName: "star"), for: .normal)
         return button
     }()
@@ -48,6 +50,7 @@ class ExchangeRateCellContentView: UIView {
     }
     
     private func setUpContentViews() {
+        backgroundColor = UIColor(named: "CellBackgroundColor")
         [labelStackView, rateLabel, starButton].forEach { addSubview($0) }
         [currencyLabel, countryLabel].forEach { labelStackView.addArrangedSubview($0) }
     }
@@ -69,7 +72,6 @@ class ExchangeRateCellContentView: UIView {
             make.centerY.equalToSuperview()
             make.width.height.equalTo(28)
         }
-        
     }
     
     func configure(with data: CurrencyData, isFavorite: Bool) {
