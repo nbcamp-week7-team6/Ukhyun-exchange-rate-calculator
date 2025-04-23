@@ -1,8 +1,7 @@
 import UIKit
 import SnapKit
 
-class CalculatorViewController: UIViewController {
-
+class CalculatorView: UIView {
     private let titleLabel: UILabel = {
         let title = UILabel()
         title.text = "환율 계산기"
@@ -19,20 +18,20 @@ class CalculatorViewController: UIViewController {
         return stack
     }()
     
-    private let currencyLabel: UILabel = {
+    public let currencyLabel: UILabel = {
         let currency = UILabel()
         currency.font = .systemFont(ofSize: 24, weight: .bold)
         return currency
     }()
     
-    private let countryLabel: UILabel = {
+    public let countryLabel: UILabel = {
         let country = UILabel()
         country.font = .systemFont(ofSize: 16)
         country.textColor = .gray
         return country
     }()
     
-    private let amountTextField: UITextField = {
+    public let amountTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.keyboardType = .decimalPad
@@ -41,7 +40,7 @@ class CalculatorViewController: UIViewController {
         return textField
     }()
     
-    private lazy var convertButton: UIButton = {
+    public let convertButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 8
         button.clipsToBounds = true
@@ -49,11 +48,10 @@ class CalculatorViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.setTitle("환율 계산", for: .normal)
-        button.addTarget(self, action: #selector(convertButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    private let resultLabel: UILabel = {
+    public let resultLabel: UILabel = {
         let result = UILabel()
         result.font = .systemFont(ofSize: 20, weight: .medium)
         result.textAlignment = .center
@@ -61,36 +59,30 @@ class CalculatorViewController: UIViewController {
         return result
     }()
     
-    var currency: String?
-    var country: String?
-    var rate: Double?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        load()
-        configureUI()
-    }
-}
-
-extension CalculatorViewController {
-    private func configureUI() {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setUpViews()
         setUpConstraints()
     }
     
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func setUpViews() {
-        view.backgroundColor = .white
-        [titleLabel, labelStackView, amountTextField, convertButton, resultLabel].forEach { view.addSubview($0) }
+        backgroundColor = .white
+        [titleLabel, labelStackView, amountTextField, convertButton, resultLabel].forEach { addSubview($0) }
         [currencyLabel, countryLabel].forEach { labelStackView.addArrangedSubview($0) }
     }
     
     private func setUpConstraints() {
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(safeAreaLayoutGuide).offset(10)
+            make.leading.equalTo(safeAreaLayoutGuide).offset(10)
         }
         labelStackView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(32)
+            make.top.equalTo(safeAreaLayoutGuide).offset(32)
             make.centerX.equalToSuperview()
         }
         amountTextField.snp.makeConstraints { make in
@@ -107,37 +99,5 @@ extension CalculatorViewController {
             make.top.equalTo(convertButton.snp.bottom).offset(32)
             make.directionalHorizontalEdges.equalToSuperview().inset(24)
         }
-    }
-}
-
-extension CalculatorViewController {
-    @objc
-    private func convertButtonTapped() {
-        guard let text = amountTextField.text, !text.isEmpty else {
-            showAlert(title: "입력 오류", message: "금액을 입력해주세요.")
-            return
-        }
-        guard let amount = Double(text) else {
-            showAlert(title: "입력 오류", message: "올바른 숫자를 입력해주세요.")
-            return
-        }
-        guard let rate = rate else {
-            showAlert(title: "오류", message: "환율 정보가 없습니다.")
-            return
-        }
-        
-        let result = amount * rate
-        resultLabel.text = "$\(amount.decimalFormattedWithTwo) → \(result.decimalFormattedWithTwo)\(currency ?? "")"
-    }
-}
-
-extension CalculatorViewController {
-    func load() {
-        loadVCData()
-    }
-    
-    func loadVCData() {
-        currencyLabel.text = currency
-        countryLabel.text = country
     }
 }
