@@ -55,12 +55,14 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - SearchBar Delegate
 extension ViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.searchCurrency(searchText)
     }
 }
 
+// MARK: - TableView DataSource & Delegate
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.shouldShowEmptyState ? 1 : viewModel.filteredCount
@@ -84,9 +86,17 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let item = viewModel.getFilteredItem(at: indexPath.row) else {
             return UITableViewCell()
         }
+        
         let countryName = viewModel.getCountryName(for: item.currency)
         let data = CurrencyData(currency: item.currency, country: countryName, rate: item.rate)
-        cell.cellData(with: data)
+        let isFavorite = viewModel.isFavorite(currency: item.currency)
+        
+        cell.cellData(with: data, isFavorite: isFavorite)
+        cell.onStarTapped = { [weak self] code in
+            self?.viewModel.toggleFavorite(currency: code)
+            self?.mainView.tableView.reloadData()
+        }
+        
         return cell
     }
     

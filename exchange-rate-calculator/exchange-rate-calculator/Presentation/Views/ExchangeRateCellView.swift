@@ -22,8 +22,15 @@ class ExchangeRateCellContentView: UIView {
         return label
     }()
     
+    let starButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.tintColor = .systemYellow
+        button.setImage(UIImage(systemName: "star"), for: .normal)
+        return button
+    }()
+    
     private lazy var labelStackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [currencyLabel, countryLabel])
+        let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 4
         return stack
@@ -41,7 +48,8 @@ class ExchangeRateCellContentView: UIView {
     }
     
     private func setUpContentViews() {
-        [labelStackView, rateLabel].forEach { addSubview($0) }
+        [labelStackView, rateLabel, starButton].forEach { addSubview($0) }
+        [currencyLabel, countryLabel].forEach { labelStackView.addArrangedSubview($0) }
     }
     
     private func setUpConstraints() {
@@ -50,16 +58,25 @@ class ExchangeRateCellContentView: UIView {
             make.centerY.equalToSuperview()
         }
         rateLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(16)
+            make.trailing.equalTo(starButton.snp.leading).offset(-8)
             make.centerY.equalToSuperview()
             make.leading.greaterThanOrEqualTo(labelStackView.snp.trailing).offset(16)
-            make.width.equalTo(120)
+            make.width.equalTo(100)
         }
+        
+        starButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(16)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(28)
+        }
+        
     }
     
-    func configure(with data: CurrencyData) {
+    func configure(with data: CurrencyData, isFavorite: Bool) {
         currencyLabel.text = data.currency
         countryLabel.text = data.country
         rateLabel.text = "\(data.rate.decimalFormattedWithFour)"
+        let imageName = isFavorite ? "star.fill" : "star"
+        starButton.setImage(UIImage(systemName: imageName), for: .normal)
     }
 }
